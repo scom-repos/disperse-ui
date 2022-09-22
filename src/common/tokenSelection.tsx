@@ -571,7 +571,7 @@ export class TokenSelection extends Module {
         <i-modal id="tokenSelectionModal" class="bg-modal" title="Select Token" closeIcon={{ name: 'times' }} onClose={() => this.onCloseModal()}>
           <i-panel class="search">
             <i-icon width={16} height={16} name="search" fill="white" />
-            <i-input id="tokenSearch" placeholder="Search name or paste address" width="100%" onKeyUp={this.filterSearch.bind(this)} />
+            <i-input id="tokenSearch" placeholder="Search name or paste address" width="100%" height="100%" onKeyUp={this.filterSearch.bind(this)} />
           </i-panel>
           <i-panel id="commonTokenPanel" margin={{bottom: 16}} class="common-token">
             <i-label caption="Common Tokens" />

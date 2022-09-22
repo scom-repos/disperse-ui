@@ -145,7 +145,7 @@ Styles.cssRule('.token-selection', {
               height: 'auto !important',
               padding: '1rem 1.5rem 1rem 2.25rem',
               borderRadius: '0.5rem',
-              border: '2px solid ##9C9C9C',
+              border: '2px solid #9C9C9C',
               background: 'transparent',
               color: 'inherit',
               fontSize: 'inherit',
@@ -193,7 +193,7 @@ Styles.cssRule('.token-selection', {
             },
             '.grid-item': {
               height: '50px',
-              padding: '8px 20px',
+              padding: '8px 12px',
               borderRadius: '1rem',
               border: '2px solid transparent',
               cursor: 'pointer',

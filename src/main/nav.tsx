@@ -600,7 +600,7 @@ export class Nav extends Module {
           <i-vstack height="100%" class="i-modal_content">
             <i-label id="noteNetworkLabel" class="mt-1 small-label" caption="We supports the following networks, please click to connect." />
             <i-panel class="flex networkSection" height="100%">
-              <i-grid-layout id="networkGroup" class="list-view networks" columnsPerRow={1} templateRows={['max-content']} />
+              <i-grid-layout id="networkGroup" class="list-view networks" />
             </i-panel>
           </i-vstack>
         </i-modal>
