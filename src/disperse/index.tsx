@@ -14,6 +14,17 @@ import { RenderResultData, DownloadReportData } from './disperse.type';
 
 const Theme = Styles.Theme.ThemeVars;
 
+enum ApproveButtonCaption {
+  NeedTo = 'APPROVE',
+  Doing = 'APPROVING',
+  NoNeed = 'APPROVED',
+}
+
+enum DisperseButtonCaption {
+  Doing = 'DISPERSING',
+  Waiting = 'DISPERSE',
+}
+
 @customModule
 export class Disperse extends Module {
   private $eventBus: EventBus;
@@ -154,9 +165,9 @@ export class Disperse extends Module {
         this.addressesElm.appendChild(
           <i-hstack width="100%" verticalAlignment="center" gap={30}>
             <i-vstack width={450}>
-              <i-label caption={item.address} font={{ size: '16px', color: valid ? '#A8A8A8' : '#F05E61', name: 'Montserrat Medium' }} />
+              <i-label caption={item.address} font={{ size: '14px', color: valid ? '#A8A8A8' : '#F05E61', name: 'monospace' }} />
             </i-vstack>
-            <i-label caption={`${item.amount.toFixed()} ${symbol}`} font={{ size: '16px', color: '#A8A8A8', name: 'Montserrat Medium' }} class="text-right" />
+            <i-label caption={`${item.amount.toFixed()} ${symbol}`} font={{ size: '14px', color: '#A8A8A8', name: 'Montserrat' }} class="text-right" />
           </i-hstack>
         );
       };
@@ -167,7 +178,7 @@ export class Disperse extends Module {
       if (countInvalid) {
         this.invalidElm.caption = `There ${countInvalid === 1 ? 'is' : 'are'} ${countInvalid} invalid ${countInvalid === 1 ? 'address' : 'addresses' }!`;
         this.invalidElm.visible = true;
-        this.btnApprove.caption = 'Approve';
+        this.btnApprove.caption = ApproveButtonCaption.NeedTo;
         this.btnApprove.enabled = false;
         this.btnDisperse.enabled = false;
       } else {
@@ -358,10 +369,10 @@ export class Disperse extends Module {
   private resetData = () => {
     this.setEnabledStatus(true);
     this.btnApprove.rightIcon.visible = false;
-    this.btnApprove.caption = 'Approve';
+    this.btnApprove.caption = ApproveButtonCaption.NeedTo;
     this.btnApprove.enabled = false;
     this.btnDisperse.rightIcon.visible = false;
-    this.btnDisperse.caption = 'Disperse';
+    this.btnDisperse.caption = DisperseButtonCaption.Waiting;
     this.btnDisperse.enabled = false;
     this.inputBatch.value = '';
     this.invalidElm.visible = false;
@@ -387,7 +398,7 @@ export class Disperse extends Module {
   private getApprovalStatus = async () => {
     if (!this.token) return;
     if (this.remaining.lt(0)) {
-      this.btnApprove.caption = 'Approve';
+      this.btnApprove.caption = ApproveButtonCaption.NeedTo;
       this.btnApprove.enabled = false;
       this.btnDisperse.enabled = false;
       return;
@@ -415,7 +426,7 @@ export class Disperse extends Module {
       } else if (receipt) {
         this.showMessage('success', receipt);
         this.btnApprove.rightIcon.visible = true;
-        this.btnApprove.caption = 'Approving';
+        this.btnApprove.caption = ApproveButtonCaption.Doing;
         this.setEnabledStatus(false);
       }
     };
@@ -423,7 +434,7 @@ export class Disperse extends Module {
     const confirmationCallBackActions = async () => {
       this.btnApprove.rightIcon.visible = false;
       this.btnApprove.enabled = false;
-      this.btnApprove.caption = 'Approved';
+      this.btnApprove.caption = ApproveButtonCaption.NoNeed;
       this.btnDisperse.enabled = this.remaining.gte(0);
       this.setEnabledStatus(true);
     };
@@ -453,7 +464,7 @@ export class Disperse extends Module {
         timestamp = formatUTCDate(moment());
         receipt = _receipt;
         this.btnDisperse.rightIcon.visible = true;
-        this.btnDisperse.caption = 'Dispersing';
+        this.btnDisperse.caption = DisperseButtonCaption.Doing;
         this.setEnabledStatus(false);
         this.showMessage('success', _receipt);
       }
@@ -580,8 +591,8 @@ export class Disperse extends Module {
               <i-label id="importWarning" caption="" font={{ size: '13px', name: 'Montserrat Medium' }}/>
               <i-input id="inputBatch" height="auto" enabled={false} placeholder={disperseDataToString(this.DummyDisperseData())} class="input-batch custom-scroll" width="100%" inputType="textarea" rows={4} margin={{top: 30}} onChanged={this.onInputBatch} />
             </i-vstack>
-            <i-hstack id="fourthStepElm" class="step-elm" background={{color: "#34343A"}} minHeight={240} margin={{top: 40}} border={{ radius: 30 }}>
-              <i-vstack width="100%">
+            <i-vstack id="fourthStepElm" class="step-elm" minHeight={240} margin={{top: 40}}>
+              <i-vstack width="100%" background={{color: "#34343A"}} border={{ radius: 30 }}>
                 <i-hstack verticalAlignment="center" horizontalAlignment="space-between">
                   <i-vstack class="step-4" background={{color: Theme.background.modal}} width={800} height="100%" padding={{ top: 50, bottom: 21, left: 50, right: 50 }} gap={15} border={{ radius: 30 }}>
                     <i-hstack width="100%" verticalAlignment="center" gap={15}>
@@ -618,32 +629,34 @@ export class Disperse extends Module {
                     </i-hstack>
                   </i-vstack>
                 </i-hstack>
-                <i-hstack verticalAlignment="center" horizontalAlignment="center" margin={{top: 60}} gap={30}>
-                  <i-button
-                    id="btnApprove"
-                    caption="Approve"
-                    class="btn-os"
-                    width={300}
-                    enabled={false}
-                    rightIcon={{ spin: true, visible: false }}
-                    border={{ radius: 12 }}
-                    padding={{top: 12, bottom: 12}}
-                    onClick={this.handleApprove}
-                  />
-                  <i-button
-                    id="btnDisperse"
-                    caption="Disperse"
-                    class="btn-os"
-                    width={300}
-                    enabled={false}
-                    rightIcon={{ spin: true, visible: false }}
-                    border={{ radius: 12 }}
-                    padding={{top: 12, bottom: 12}}
-                    onClick={this.handleDisperse}
-                  />
-                </i-hstack>
               </i-vstack>
-            </i-hstack>
+              <i-hstack verticalAlignment="center" horizontalAlignment="center" margin={{top: 30}} gap={30}>
+                <i-button
+                  id="btnApprove"
+                  caption={ApproveButtonCaption.NeedTo}
+                  class="btn-os"
+                  font={{bold:true}}
+                  width={300}
+                  enabled={false}
+                  rightIcon={{ spin: true, visible: false }}
+                  border={{ radius: 12 }}
+                  padding={{top: 12, bottom: 12}}
+                  onClick={this.handleApprove}
+                />
+                <i-button
+                  id="btnDisperse"
+                  caption={DisperseButtonCaption.Waiting}
+                  class="btn-os"
+                  font={{bold:true}}
+                  width={300}
+                  enabled={false}
+                  rightIcon={{ spin: true, visible: false }}
+                  border={{ radius: 12 }}
+                  padding={{top: 12, bottom: 12}}
+                  onClick={this.handleDisperse}
+                />
+              </i-hstack>
+            </i-vstack>
           </i-vstack>
           <i-panel id="resultElm" visible={false} margin={{top: 75, bottom: 100}}/>
         </i-panel>

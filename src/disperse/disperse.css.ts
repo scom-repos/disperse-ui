@@ -22,6 +22,9 @@ Styles.cssRule('.disperse-component', {
       cursor: 'default',
       borderColor: Theme.colors.primary.main,
     },
+    '#btnNetwork:hover': {
+      background: Theme.background.main,
+    },
     '.csv-button': {
       background: '#34343A',
       height: 45,

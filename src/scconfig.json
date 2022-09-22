@@ -23,7 +23,7 @@
   "params": {
     "projectInfo": {
       "img": "img/sc-footer.svg",
-      "versionText": "Version: 0.1.0-Beta"
+      "versionText": "Version: 0.1.1-Beta"
     }
   }
 }
