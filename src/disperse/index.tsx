@@ -534,8 +534,8 @@ export class Disperse extends Module {
         </i-modal>
         <i-panel class="container-layout">
           <i-image url={Assets.fullPath('img/disperse-banner.png')} />
-          <i-vstack id="containerElm" position="relative" margin={{top: 50}} minHeight={800}>
-            <i-hstack id="firstStepElm" class="step-elm" minHeight={200} padding={{left: 50, right: 50}} border={{ radius: 30 }} verticalAlignment="center" horizontalAlignment="space-between" background={{color: Theme.background.modal}}>
+          <i-vstack id="containerElm" position="relative" margin={{top: 35}} minHeight={800}>
+            <i-hstack id="firstStepElm" class="step-elm" minHeight={160} padding={{left: 50, right: 50}} border={{ radius: 30 }} verticalAlignment="center" horizontalAlignment="space-between" background={{color: Theme.background.modal}}>
               <i-hstack verticalAlignment="center" gap={15} margin={{right: 100}}>
                 <i-label caption="STEP 1" font={{ size: '20px', name: 'Montserrat SemiBold', color: Theme.colors.primary.main }} />
                 <i-label caption="Connect Wallet" font={{ size: '20px', name: 'Montserrat SemiBold' }} />
@@ -549,7 +549,7 @@ export class Disperse extends Module {
               />
               <i-vstack id="containerUserInfo" />
             </i-hstack>
-            <i-hstack id="secondStepElm" class="step-elm" minHeight={200} margin={{top: 40}} padding={{left: 50, right: 50}} border={{ radius: 30 }} verticalAlignment="center" horizontalAlignment="space-between" background={{color: Theme.background.modal}}>
+            <i-hstack id="secondStepElm" class="step-elm" minHeight={160} margin={{top: 35}} padding={{left: 50, right: 50}} border={{ radius: 30 }} verticalAlignment="center" horizontalAlignment="space-between" background={{color: Theme.background.modal}}>
               <i-hstack class="step-2" verticalAlignment="center" gap={15} margin={{right: 100}}>
                 <i-label caption="STEP 2" font={{ size: '20px', name: 'Montserrat SemiBold', color: Theme.colors.primary.main }} />
                 <i-label caption="Enter Token to Disperse" font={{ size: '20px', name: 'Montserrat SemiBold' }} />
@@ -564,7 +564,7 @@ export class Disperse extends Module {
                 <token-selection id="tokenSelection" />
               </i-hstack>
             </i-hstack>
-            <i-vstack id="thirdStepElm" class="step-elm" minHeight={300} margin={{top: 40}} padding={{left: 50, right: 50}} border={{ radius: 30 }} verticalAlignment="center" background={{color: Theme.background.modal}}>
+            <i-vstack id="thirdStepElm" class="step-elm" minHeight={300} margin={{top: 35}} padding={{left: 50, right: 50}} border={{ radius: 30 }} verticalAlignment="center" background={{color: Theme.background.modal}}>
               <i-hstack width="100%" verticalAlignment="center" horizontalAlignment="space-between" gap={15}>
                 <i-hstack verticalAlignment="center" gap={15} margin={{right: 15}}>
                   <i-label caption="STEP 3" font={{ size: '20px', name: 'Montserrat SemiBold', color: Theme.colors.primary.main }} />
@@ -580,10 +580,10 @@ export class Disperse extends Module {
               <i-label id="importWarning" caption="" font={{ size: '13px', name: 'Montserrat Medium' }}/>
               <i-input id="inputBatch" height="auto" enabled={false} placeholder={disperseDataToString(this.DummyDisperseData())} class="input-batch custom-scroll" width="100%" inputType="textarea" rows={4} margin={{top: 30}} onChanged={this.onInputBatch} />
             </i-vstack>
-            <i-vstack id="fourthStepElm" class="step-elm" minHeight={240} margin={{top: 40}}>
+            <i-vstack id="fourthStepElm" class="step-elm" minHeight={240} margin={{top: 35}}>
               <i-vstack width="100%" background={{color: "#34343A"}} border={{ radius: 30 }}>
                 <i-hstack verticalAlignment="center" horizontalAlignment="space-between">
-                  <i-vstack class="step-4" background={{color: Theme.background.modal}} width={800} height="100%" padding={{ top: 50, bottom: 21, left: 50, right: 50 }} gap={15} border={{ radius: 30 }}>
+                  <i-vstack class="step-4" background={{color: Theme.background.modal}} width={800} height="100%" padding={{ top: 20, bottom: 20, left: 50, right: 50 }} gap={15} border={{ radius: 30 }}>
                     <i-hstack width="100%" verticalAlignment="center" gap={15}>
                       <i-label caption="STEP 4" font={{ size: '20px', name: 'Montserrat SemiBold', color: Theme.colors.primary.main }} />
                       <i-label caption="Confirm Disperse" font={{ size: '20px', name: 'Montserrat SemiBold' }} />
@@ -597,7 +597,7 @@ export class Disperse extends Module {
                           </i-vstack>
                           <i-label caption="Amount" font={{ size: '16px', name: 'Montserrat Medium' }} />
                         </i-hstack>
-                        <i-vstack width="100%" height={100} class="overflow-auto" padding={{right: 5}}>
+                        <i-vstack width="100%" maxHeight={210} class="overflow-auto" padding={{right: 5}}>
                           <i-vstack id="addressesElm" width="100%" height="100%" verticalAlignment="start" gap={4} />
                         </i-vstack>
                       </i-vstack>
@@ -619,7 +619,7 @@ export class Disperse extends Module {
                   </i-vstack>
                 </i-hstack>
               </i-vstack>
-              <i-hstack verticalAlignment="center" horizontalAlignment="center" margin={{top: 30}} gap={30}>
+              <i-hstack verticalAlignment="center" horizontalAlignment="center" margin={{top: 35}} gap={30}>
                 <i-button
                   id="btnApprove"
                   caption="Approve"
