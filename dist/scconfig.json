@@ -6,19 +6,19 @@
   "routes": [
     {
       "url": "#/disperse",
-      "module": "./disperse/index.js",
+      "module": "{root}/disperse/index.js",
       "default": true,
       "dependencies": {
-        "@disperse/disperse-utils": "./disperse-utils/index.js"
+        "@disperse/disperse-utils": "{root}/disperse-utils/index.js"
       }
     }
   ],
   "dependencies": {
-    "@disperse/sdks": "./sdks/index.js",
-    "@disperse/assets": "./assets/index.js",
-    "@disperse/global": "./global/index.js",
-    "@disperse/store": "./store/index.js",
-    "@disperse/common": "./common/index.js"
+    "@disperse/sdks": "{root}/sdks/index.js",
+    "@disperse/assets": "{root}/assets/index.js",
+    "@disperse/global": "{root}/global/index.js",
+    "@disperse/store": "{root}/store/index.js",
+    "@disperse/common": "{root}/common/index.js"
   },
   "params": {
     "footerPagesInfo": [
