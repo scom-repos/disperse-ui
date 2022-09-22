@@ -154,9 +154,9 @@ export class Disperse extends Module {
         this.addressesElm.appendChild(
           <i-hstack width="100%" verticalAlignment="center" gap={30}>
             <i-vstack width={450}>
-              <i-label caption={item.address} font={{ size: '16px', color: valid ? '#A8A8A8' : '#F05E61', name: 'Montserrat Medium' }} />
+              <i-label caption={item.address} font={{ size: '14px', color: valid ? '#A8A8A8' : '#F05E61', name: 'monospace' }} />
             </i-vstack>
-            <i-label caption={`${item.amount.toFixed()} ${symbol}`} font={{ size: '16px', color: '#A8A8A8', name: 'Montserrat Medium' }} class="text-right" />
+            <i-label caption={`${item.amount.toFixed()} ${symbol}`} font={{ size: '14px', color: '#A8A8A8', name: 'Montserrat' }} class="text-right" />
           </i-hstack>
         );
       };
