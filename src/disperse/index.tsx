@@ -14,6 +14,17 @@ import { RenderResultData, DownloadReportData } from './disperse.type';
 
 const Theme = Styles.Theme.ThemeVars;
 
+enum ApproveButtonCaption {
+  NeedTo = 'APPROVE',
+  Doing = 'APPROVING',
+  NoNeed = 'APPROVED',
+}
+
+enum DisperseButtonCaption {
+  Doing = 'DISPERSING',
+  Waiting = 'DISPERSE',
+}
+
 @customModule
 export class Disperse extends Module {
   private $eventBus: EventBus;
@@ -167,7 +178,7 @@ export class Disperse extends Module {
       if (countInvalid) {
         this.invalidElm.caption = `There ${countInvalid === 1 ? 'is' : 'are'} ${countInvalid} invalid ${countInvalid === 1 ? 'address' : 'addresses' }!`;
         this.invalidElm.visible = true;
-        this.btnApprove.caption = 'Approve';
+        this.btnApprove.caption = ApproveButtonCaption.NeedTo;
         this.btnApprove.enabled = false;
         this.btnDisperse.enabled = false;
       } else {
@@ -358,10 +369,10 @@ export class Disperse extends Module {
   private resetData = () => {
     this.setEnabledStatus(true);
     this.btnApprove.rightIcon.visible = false;
-    this.btnApprove.caption = 'Approve';
+    this.btnApprove.caption = ApproveButtonCaption.NeedTo;
     this.btnApprove.enabled = false;
     this.btnDisperse.rightIcon.visible = false;
-    this.btnDisperse.caption = 'Disperse';
+    this.btnDisperse.caption = DisperseButtonCaption.Waiting;
     this.btnDisperse.enabled = false;
     this.inputBatch.value = '';
     this.invalidElm.visible = false;
@@ -387,7 +398,7 @@ export class Disperse extends Module {
   private getApprovalStatus = async () => {
     if (!this.token) return;
     if (this.remaining.lt(0)) {
-      this.btnApprove.caption = 'Approve';
+      this.btnApprove.caption = ApproveButtonCaption.NeedTo;
       this.btnApprove.enabled = false;
       this.btnDisperse.enabled = false;
       return;
@@ -415,7 +426,7 @@ export class Disperse extends Module {
       } else if (receipt) {
         this.showMessage('success', receipt);
         this.btnApprove.rightIcon.visible = true;
-        this.btnApprove.caption = 'Approving';
+        this.btnApprove.caption = ApproveButtonCaption.Doing;
         this.setEnabledStatus(false);
       }
     };
@@ -423,7 +434,7 @@ export class Disperse extends Module {
     const confirmationCallBackActions = async () => {
       this.btnApprove.rightIcon.visible = false;
       this.btnApprove.enabled = false;
-      this.btnApprove.caption = 'Approved';
+      this.btnApprove.caption = ApproveButtonCaption.NoNeed;
       this.btnDisperse.enabled = this.remaining.gte(0);
       this.setEnabledStatus(true);
     };
@@ -453,7 +464,7 @@ export class Disperse extends Module {
         timestamp = formatUTCDate(moment());
         receipt = _receipt;
         this.btnDisperse.rightIcon.visible = true;
-        this.btnDisperse.caption = 'Dispersing';
+        this.btnDisperse.caption = DisperseButtonCaption.Doing;
         this.setEnabledStatus(false);
         this.showMessage('success', _receipt);
       }
@@ -622,8 +633,9 @@ export class Disperse extends Module {
               <i-hstack verticalAlignment="center" horizontalAlignment="center" margin={{top: 30}} gap={30}>
                 <i-button
                   id="btnApprove"
-                  caption="Approve"
+                  caption={ApproveButtonCaption.NeedTo}
                   class="btn-os"
+                  font={{bold:true}}
                   width={300}
                   enabled={false}
                   rightIcon={{ spin: true, visible: false }}
@@ -633,8 +645,9 @@ export class Disperse extends Module {
                 />
                 <i-button
                   id="btnDisperse"
-                  caption="Disperse"
+                  caption={DisperseButtonCaption.Waiting}
                   class="btn-os"
+                  font={{bold:true}}
                   width={300}
                   enabled={false}
                   rightIcon={{ spin: true, visible: false }}
