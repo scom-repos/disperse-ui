@@ -2,6 +2,8 @@
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Disperse</title>
+  <meta name="title" content="Disperse">
   <link rel="shortcut icon" href="./assets/img/favicon.ico">
   <script src="/dist/launcher.js"></script>
 </head>

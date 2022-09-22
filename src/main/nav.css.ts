@@ -297,6 +297,7 @@ export default Styles.style({
             '.list-item': {
               backgroundColor: '#34343A',
               minHeight: '50px',
+              height: 'fit-content',
               position: 'relative',
               borderRadius: 10,
               cursor: 'pointer',
@@ -344,7 +345,7 @@ export default Styles.style({
         },
         '.networks': {
           marginTop: '1.5rem',
-          height: 'calc(100% - 160px)',
+          height: 'calc(100% - 100px)',
           overflowY: 'auto',
           width: '100% !important',
           paddingLeft: '1.25rem',
