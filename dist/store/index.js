@@ -11308,32 +11308,18 @@ var listNetworks = [
     img: "aminoXTestnet.svg"
   }
 ];
+var isMainnet = (chainId) => Object.values(Mainnets).some((n) => n.chainId === chainId);
+var isTestnet = (chainId) => Object.values(Testnets).some((n) => n.chainId === chainId);
+var getSupportedNetworkOrder = (chainId) => {
+  if (isMainnet(chainId))
+    return 2;
+  if (isTestnet(chainId))
+    return 1;
+  return 0;
+};
 var listsNetworkShow = () => {
-  let list = listNetworks.filter((network) => !Networks[network.chainId].isDisabled);
-  const siteEnv = getSiteEnv();
-  if (siteEnv === import_global.SITE_ENV.TESTNET) {
-    return list.filter((network) => [
-      31337,
-      97,
-      42,
-      43113,
-      4002,
-      80001,
-      13370,
-      338
-    ].includes(network.chainId));
-  }
-  if (siteEnv === import_global.SITE_ENV.DEV) {
-    return list;
-  }
-  return list.filter((network) => [
-    1,
-    56,
-    43114,
-    137,
-    250,
-    25
-  ].includes(network.chainId) && canDisperse(network.chainId));
+  let list = listNetworks.filter((network) => !Networks[network.chainId].isDisabled && canDisperse(network.chainId)).sort((a, b) => getSupportedNetworkOrder(b.chainId) - getSupportedNetworkOrder(a.chainId));
+  return list;
 };
 var getNetworkImg = (chainId) => {
   try {
