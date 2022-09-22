@@ -105,15 +105,15 @@ Styles.cssRule('.disperse-component', {
         },
         '.step-elm': {
           flexWrap: 'wrap',
-          gap: '10px',
-          padding: '15px 10px !important',
+          gap: '5px',
+          padding: '10px 10px !important',
         },
         '.step-2': {
           width: '100% !important',
           marginRight: '0 !important',
         },
         '#tokenElm': {
-          padding: '15px 10px !important',
+          padding: '10px 10px !important',
         },
         '#containerUserInfo > i-vstack': {
           gap: '8px !important'
