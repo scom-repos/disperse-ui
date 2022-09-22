@@ -54,18 +54,22 @@ export class Footer extends Module {
         <i-label font={{ size: '1rem', bold: true }} caption="SECURE COMPUTE" />
         <i-label font={{ size: '0.85rem' }} caption={projectInfo.versionText} />
       </i-vstack>
-    )     
-    const socialMediaInfoList: any[] = params.socialMediaInfo;
-    for (const info of socialMediaInfoList) {
-      this.socialMediaStack.appendChild(<i-label link={{ href: info.link }}>
-        <i-image url={Assets.fullPath(info.img)} width="24px" />
-      </i-label>)
+    );
+    if (params.socialMediaInfo) {
+      const socialMediaInfoList: any[] = params.socialMediaInfo;
+      for (const info of socialMediaInfoList) {
+        this.socialMediaStack.appendChild(<i-label link={{ href: info.link }}>
+          <i-image url={Assets.fullPath(info.img)} width="24px" />
+        </i-label>)
+      }
     }
-    const footerPagesInfoList: any[] = params.footerPagesInfo;
-    for (const info of footerPagesInfoList) {
-      this.pagesStack.appendChild(<i-label font={{color:"#fff"}} link={{ href: info.link }}>
-        <i-label font={{ size: '0.85rem' }} caption={info.caption} />
-      </i-label>)
+    if (params.footerPagesInfo) {
+      const footerPagesInfoList: any[] = params.footerPagesInfo;
+      for (const info of footerPagesInfoList) {
+        this.pagesStack.appendChild(<i-label font={{color:"#fff"}} link={{ href: info.link }}>
+          <i-label font={{ size: '0.85rem' }} caption={info.caption} />
+        </i-label>)
+      }
     }
     this.controlPageStackDisplay();
   }
