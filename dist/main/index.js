@@ -1649,24 +1649,28 @@ var Footer = class extends import_components6.Module {
       font: { size: "0.85rem" },
       caption: projectInfo.versionText
     })));
-    const socialMediaInfoList = params.socialMediaInfo;
-    for (const info of socialMediaInfoList) {
-      this.socialMediaStack.appendChild(/* @__PURE__ */ this.$render("i-label", {
-        link: { href: info.link }
-      }, /* @__PURE__ */ this.$render("i-image", {
-        url: import_assets4.default.fullPath(info.img),
-        width: "24px"
-      })));
+    if (params.socialMediaInfo) {
+      const socialMediaInfoList = params.socialMediaInfo;
+      for (const info of socialMediaInfoList) {
+        this.socialMediaStack.appendChild(/* @__PURE__ */ this.$render("i-label", {
+          link: { href: info.link }
+        }, /* @__PURE__ */ this.$render("i-image", {
+          url: import_assets4.default.fullPath(info.img),
+          width: "24px"
+        })));
+      }
     }
-    const footerPagesInfoList = params.footerPagesInfo;
-    for (const info of footerPagesInfoList) {
-      this.pagesStack.appendChild(/* @__PURE__ */ this.$render("i-label", {
-        font: { color: "#fff" },
-        link: { href: info.link }
-      }, /* @__PURE__ */ this.$render("i-label", {
-        font: { size: "0.85rem" },
-        caption: info.caption
-      })));
+    if (params.footerPagesInfo) {
+      const footerPagesInfoList = params.footerPagesInfo;
+      for (const info of footerPagesInfoList) {
+        this.pagesStack.appendChild(/* @__PURE__ */ this.$render("i-label", {
+          font: { color: "#fff" },
+          link: { href: info.link }
+        }, /* @__PURE__ */ this.$render("i-label", {
+          font: { size: "0.85rem" },
+          caption: info.caption
+        })));
+      }
     }
     this.controlPageStackDisplay();
   }

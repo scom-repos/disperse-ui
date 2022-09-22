@@ -158,7 +158,14 @@ enum ChainNetwork {
   AminoXTestnet = 13370
 }
 
-const listNetworks = [
+interface UISupportedNetwork{
+  label: string
+  value: string
+  chainId: ChainNetwork
+  img: string
+}
+
+const listNetworks:UISupportedNetwork[] = [
   {
     label: 'Binance Smart Chain',
     value: 'binance',
@@ -245,8 +252,17 @@ const listNetworks = [
   },
 ];
 
+const isMainnet = (chainId:number) => Object.values(Mainnets).some(n=>n.chainId===chainId);
+const isTestnet = (chainId:number) => Object.values(Testnets).some(n=>n.chainId===chainId);
+const getSupportedNetworkOrder = (chainId:number) => {
+  if (isMainnet(chainId)) return 2; //first
+  if (isTestnet(chainId)) return 1; //second
+  return 0;
+}
 const listsNetworkShow = () => {
-  let list = listNetworks.filter(network => !Networks[network.chainId].isDisabled);
+  let list = listNetworks.filter(network => !Networks[network.chainId].isDisabled && canDisperse(network.chainId)).sort((a, b) => getSupportedNetworkOrder(b.chainId)-getSupportedNetworkOrder(a.chainId));
+  return list;
+  /*
   const siteEnv = getSiteEnv();
   if (siteEnv === SITE_ENV.TESTNET) {
     return list.filter((network) =>
@@ -275,7 +291,7 @@ const listsNetworkShow = () => {
       ChainNetwork.Fantom,
       ChainNetwork.CronosMainnet,
     ].includes(network.chainId) && canDisperse(network.chainId),
-  );
+  );*/
 };
 
 const getNetworkImg = (chainId: number) => {
