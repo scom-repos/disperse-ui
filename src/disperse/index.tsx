@@ -580,8 +580,8 @@ export class Disperse extends Module {
               <i-label id="importWarning" caption="" font={{ size: '13px', name: 'Montserrat Medium' }}/>
               <i-input id="inputBatch" height="auto" enabled={false} placeholder={disperseDataToString(this.DummyDisperseData())} class="input-batch custom-scroll" width="100%" inputType="textarea" rows={4} margin={{top: 30}} onChanged={this.onInputBatch} />
             </i-vstack>
-            <i-hstack id="fourthStepElm" class="step-elm" background={{color: "#34343A"}} minHeight={240} margin={{top: 40}} border={{ radius: 30 }}>
-              <i-vstack width="100%">
+            <i-vstack id="fourthStepElm" class="step-elm" minHeight={240} margin={{top: 40}}>
+              <i-vstack width="100%" background={{color: "#34343A"}} border={{ radius: 30 }}>
                 <i-hstack verticalAlignment="center" horizontalAlignment="space-between">
                   <i-vstack class="step-4" background={{color: Theme.background.modal}} width={800} height="100%" padding={{ top: 50, bottom: 21, left: 50, right: 50 }} gap={15} border={{ radius: 30 }}>
                     <i-hstack width="100%" verticalAlignment="center" gap={15}>
@@ -618,32 +618,32 @@ export class Disperse extends Module {
                     </i-hstack>
                   </i-vstack>
                 </i-hstack>
-                <i-hstack verticalAlignment="center" horizontalAlignment="center" margin={{top: 60}} gap={30}>
-                  <i-button
-                    id="btnApprove"
-                    caption="Approve"
-                    class="btn-os"
-                    width={300}
-                    enabled={false}
-                    rightIcon={{ spin: true, visible: false }}
-                    border={{ radius: 12 }}
-                    padding={{top: 12, bottom: 12}}
-                    onClick={this.handleApprove}
-                  />
-                  <i-button
-                    id="btnDisperse"
-                    caption="Disperse"
-                    class="btn-os"
-                    width={300}
-                    enabled={false}
-                    rightIcon={{ spin: true, visible: false }}
-                    border={{ radius: 12 }}
-                    padding={{top: 12, bottom: 12}}
-                    onClick={this.handleDisperse}
-                  />
-                </i-hstack>
               </i-vstack>
-            </i-hstack>
+              <i-hstack verticalAlignment="center" horizontalAlignment="center" margin={{top: 30}} gap={30}>
+                <i-button
+                  id="btnApprove"
+                  caption="Approve"
+                  class="btn-os"
+                  width={300}
+                  enabled={false}
+                  rightIcon={{ spin: true, visible: false }}
+                  border={{ radius: 12 }}
+                  padding={{top: 12, bottom: 12}}
+                  onClick={this.handleApprove}
+                />
+                <i-button
+                  id="btnDisperse"
+                  caption="Disperse"
+                  class="btn-os"
+                  width={300}
+                  enabled={false}
+                  rightIcon={{ spin: true, visible: false }}
+                  border={{ radius: 12 }}
+                  padding={{top: 12, bottom: 12}}
+                  onClick={this.handleDisperse}
+                />
+              </i-hstack>
+            </i-vstack>
           </i-vstack>
           <i-panel id="resultElm" visible={false} margin={{top: 75, bottom: 100}}/>
         </i-panel>
