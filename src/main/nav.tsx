@@ -492,10 +492,10 @@ export class Nav extends Module {
   updateList(connected: boolean) {
     if (connected) {
       this.noteNetworkLabel.caption = getWalletProvider() === WalletPlugin.MetaMask ?
-        'OpenSwap supports the following networks, please click to connect.' :
-        'OpenSwap supports the following networks, please switch network in the connected wallet.'
+        'We supports the following networks, please click to connect.' :
+        'We supports the following networks, please switch network in the connected wallet.'
     } else {
-      this.noteNetworkLabel.caption = 'OpenSwap supports the following networks, please click to connect.';
+      this.noteNetworkLabel.caption = 'We supports the following networks, please click to connect.';
     }
     this.updateDot(this.walletListElm, connected, 'wallet');
     this.updateDot(this.networkGroup, connected, 'network');
@@ -598,7 +598,7 @@ export class Nav extends Module {
           class="os-modal"
         >
           <i-vstack height="100%" class="i-modal_content">
-            <i-label id="noteNetworkLabel" class="mt-1 small-label" caption="OpenSwap supports the following networks, please click to connect." />
+            <i-label id="noteNetworkLabel" class="mt-1 small-label" caption="We supports the following networks, please click to connect." />
             <i-panel class="flex networkSection" height="100%">
               <i-grid-layout id="networkGroup" class="list-view networks" columnsPerRow={1} templateRows={['max-content']} />
             </i-panel>

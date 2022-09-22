@@ -21,42 +21,6 @@
     "@disperse/common": "{root}/common/index.js"
   },
   "params": {
-    "footerPagesInfo": [
-      {
-        "caption": "Document",
-        "link": "https://doc.openswap.xyz/"
-      },
-      {
-        "caption": "FAQ",
-        "link": "https://doc.openswap.xyz/faq"
-      },
-      {
-        "caption": "Governance",
-        "link": "https://gov.openswap.xyz/"
-      }
-    ],
-    "socialMediaInfo": [
-      {
-        "img": "img/footer/twitter-darktheme.svg",
-        "link": "https://twitter.com/openswapdex/"
-      },
-      {
-        "img": "img/footer/medium-darktheme.svg",
-        "link": "https://medium.com/@openswapdex/"
-      },
-      {
-        "img": "img/footer/linkedin-darktheme.svg",
-        "link": "https://www.linkedin.com/company/openswap/"
-      },
-      {
-        "img": "img/footer/telegram-darktheme.svg",
-        "link": "https://t.me/openswapdex"
-      },
-      {
-        "img": "img/footer/reddit-darktheme.svg",
-        "link": "https://www.reddit.com/user/openswapdex/"
-      }
-    ],
     "projectInfo": {
       "img": "img/sc-footer.svg",
       "versionText": "Version: 0.1.0-Beta"

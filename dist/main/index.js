@@ -1413,9 +1413,9 @@ var Nav = class extends import_components5.Module {
   }
   updateList(connected) {
     if (connected) {
-      this.noteNetworkLabel.caption = (0, import_store2.getWalletProvider)() === import_eth_wallet.WalletPlugin.MetaMask ? "OpenSwap supports the following networks, please click to connect." : "OpenSwap supports the following networks, please switch network in the connected wallet.";
+      this.noteNetworkLabel.caption = (0, import_store2.getWalletProvider)() === import_eth_wallet.WalletPlugin.MetaMask ? "We supports the following networks, please click to connect." : "We supports the following networks, please switch network in the connected wallet.";
     } else {
-      this.noteNetworkLabel.caption = "OpenSwap supports the following networks, please click to connect.";
+      this.noteNetworkLabel.caption = "We supports the following networks, please click to connect.";
     }
     this.updateDot(this.walletListElm, connected, "wallet");
     this.updateDot(this.networkGroup, connected, "network");
@@ -1535,7 +1535,7 @@ var Nav = class extends import_components5.Module {
     }, /* @__PURE__ */ this.$render("i-label", {
       id: "noteNetworkLabel",
       class: "mt-1 small-label",
-      caption: "OpenSwap supports the following networks, please click to connect."
+      caption: "We supports the following networks, please click to connect."
     }), /* @__PURE__ */ this.$render("i-panel", {
       class: "flex networkSection",
       height: "100%"
