@@ -383,10 +383,11 @@ export class Disperse extends Module {
     this.checkStepStatus(Wallet.getInstance().isConnected);
   }
 
-  private showMessage = (status: 'warning' | 'success' | 'error', content: string | Error) => {
+  private showMessage = (status: 'warning' | 'success' | 'error', content? : string | Error, txtHash?: string) => {
     this.disperseResult.message = {
       status,
       content,
+      txtHash
     }
     this.disperseResult.showModal();
   }
@@ -427,7 +428,7 @@ export class Disperse extends Module {
       if (err) {
         this.showMessage('error', err);
       } else if (receipt) {
-        this.showMessage('success', receipt);
+        this.showMessage('success', undefined, receipt);
         this.btnApprove.rightIcon.visible = true;
         this.btnApprove.caption = ApproveButtonCaption.Doing;
         this.setEnabledStatus(false);
@@ -469,7 +470,7 @@ export class Disperse extends Module {
         this.btnDisperse.rightIcon.visible = true;
         this.btnDisperse.caption = DisperseButtonCaption.Doing;
         this.setEnabledStatus(false);
-        this.showMessage('success', _receipt);
+        this.showMessage('success', undefined, _receipt);
       }
     };
 
