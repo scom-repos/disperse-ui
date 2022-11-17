@@ -8346,7 +8346,7 @@
           var DOMPurify = function DOMPurify2(root) {
             return createDOMPurify(root);
           };
-          DOMPurify.version = "2.4.0";
+          DOMPurify.version = "2.3.10";
           DOMPurify.removed = [];
           if (!window2 || !window2.document || window2.document.nodeType !== 9) {
             DOMPurify.isSupported = false;
@@ -8416,8 +8416,6 @@
           var RETURN_DOM_FRAGMENT = false;
           var RETURN_TRUSTED_TYPE = false;
           var SANITIZE_DOM = true;
-          var SANITIZE_NAMED_PROPS = false;
-          var SANITIZE_NAMED_PROPS_PREFIX = "user-content-";
           var KEEP_CONTENT = true;
           var IN_PLACE = false;
           var USE_PROFILES = {};
@@ -8471,7 +8469,6 @@
             RETURN_TRUSTED_TYPE = cfg.RETURN_TRUSTED_TYPE || false;
             FORCE_BODY = cfg.FORCE_BODY || false;
             SANITIZE_DOM = cfg.SANITIZE_DOM !== false;
-            SANITIZE_NAMED_PROPS = cfg.SANITIZE_NAMED_PROPS || false;
             KEEP_CONTENT = cfg.KEEP_CONTENT !== false;
             IN_PLACE = cfg.IN_PLACE || false;
             IS_ALLOWED_URI$1 = cfg.ALLOWED_URI_REGEXP || IS_ALLOWED_URI$1;
@@ -8835,10 +8832,6 @@
               if (!_isValidAttribute(lcTag, lcName, value)) {
                 continue;
               }
-              if (SANITIZE_NAMED_PROPS && (lcName === "id" || lcName === "name")) {
-                _removeAttribute(name, currentNode);
-                value = SANITIZE_NAMED_PROPS_PREFIX + value;
-              }
               if (trustedTypesPolicy && _typeof3(trustedTypes) === "object" && typeof trustedTypes.getAttributeType === "function") {
                 if (namespaceURI)
                   ;
@@ -8881,8 +8874,7 @@
             }
             _executeHook("afterSanitizeShadowDOM", fragment, null);
           };
-          DOMPurify.sanitize = function(dirty) {
-            var cfg = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
+          DOMPurify.sanitize = function(dirty, cfg) {
             var body;
             var importedNode;
             var currentNode;
@@ -9169,22 +9161,12 @@
     }
   });
 
-  // node_modules/core-js/internals/is-null-or-undefined.js
-  var require_is_null_or_undefined = __commonJS({
-    "node_modules/core-js/internals/is-null-or-undefined.js"(exports, module) {
-      module.exports = function(it2) {
-        return it2 === null || it2 === void 0;
-      };
-    }
-  });
-
   // node_modules/core-js/internals/require-object-coercible.js
   var require_require_object_coercible = __commonJS({
     "node_modules/core-js/internals/require-object-coercible.js"(exports, module) {
-      var isNullOrUndefined4 = require_is_null_or_undefined();
       var $TypeError = TypeError;
       module.exports = function(it2) {
-        if (isNullOrUndefined4(it2))
+        if (it2 == void 0)
           throw $TypeError("Can't call method on " + it2);
         return it2;
       };
@@ -9202,26 +9184,10 @@
     }
   });
 
-  // node_modules/core-js/internals/document-all.js
-  var require_document_all = __commonJS({
-    "node_modules/core-js/internals/document-all.js"(exports, module) {
-      var documentAll = typeof document == "object" && document.all;
-      var IS_HTMLDDA = typeof documentAll == "undefined" && documentAll !== void 0;
-      module.exports = {
-        all: documentAll,
-        IS_HTMLDDA
-      };
-    }
-  });
-
   // node_modules/core-js/internals/is-callable.js
   var require_is_callable = __commonJS({
     "node_modules/core-js/internals/is-callable.js"(exports, module) {
-      var $documentAll = require_document_all();
-      var documentAll = $documentAll.all;
-      module.exports = $documentAll.IS_HTMLDDA ? function(argument) {
-        return typeof argument == "function" || argument === documentAll;
-      } : function(argument) {
+      module.exports = function(argument) {
         return typeof argument == "function";
       };
     }
@@ -9231,11 +9197,7 @@
   var require_is_object = __commonJS({
     "node_modules/core-js/internals/is-object.js"(exports, module) {
       var isCallable2 = require_is_callable();
-      var $documentAll = require_document_all();
-      var documentAll = $documentAll.all;
-      module.exports = $documentAll.IS_HTMLDDA ? function(it2) {
-        return typeof it2 == "object" ? it2 !== null : isCallable2(it2) || it2 === documentAll;
-      } : function(it2) {
+      module.exports = function(it2) {
         return typeof it2 == "object" ? it2 !== null : isCallable2(it2);
       };
     }
@@ -9298,9 +9260,9 @@
     }
   });
 
-  // node_modules/core-js/internals/symbol-constructor-detection.js
-  var require_symbol_constructor_detection = __commonJS({
-    "node_modules/core-js/internals/symbol-constructor-detection.js"(exports, module) {
+  // node_modules/core-js/internals/native-symbol.js
+  var require_native_symbol = __commonJS({
+    "node_modules/core-js/internals/native-symbol.js"(exports, module) {
       var V8_VERSION = require_engine_v8_version();
       var fails4 = require_fails();
       module.exports = !!Object.getOwnPropertySymbols && !fails4(function() {
@@ -9313,7 +9275,7 @@
   // node_modules/core-js/internals/use-symbol-as-uid.js
   var require_use_symbol_as_uid = __commonJS({
     "node_modules/core-js/internals/use-symbol-as-uid.js"(exports, module) {
-      var NATIVE_SYMBOL = require_symbol_constructor_detection();
+      var NATIVE_SYMBOL = require_native_symbol();
       module.exports = NATIVE_SYMBOL && !Symbol.sham && typeof Symbol.iterator == "symbol";
     }
   });
@@ -9367,10 +9329,9 @@
   var require_get_method = __commonJS({
     "node_modules/core-js/internals/get-method.js"(exports, module) {
       var aCallable = require_a_callable();
-      var isNullOrUndefined4 = require_is_null_or_undefined();
       module.exports = function(V2, P2) {
         var func = V2[P2];
-        return isNullOrUndefined4(func) ? void 0 : aCallable(func);
+        return func == null ? void 0 : aCallable(func);
       };
     }
   });
@@ -9437,10 +9398,10 @@
       (module.exports = function(key, value) {
         return store[key] || (store[key] = value !== void 0 ? value : {});
       })("versions", []).push({
-        version: "3.25.2",
+        version: "3.24.1",
         mode: IS_PURE3 ? "pure" : "global",
         copyright: "\xA9 2014-2022 Denis Pushkarev (zloirock.ru)",
-        license: "https://github.com/zloirock/core-js/blob/v3.25.2/LICENSE",
+        license: "https://github.com/zloirock/core-js/blob/v3.24.1/LICENSE",
         source: "https://github.com/zloirock/core-js"
       });
     }
@@ -9489,7 +9450,7 @@
       var shared = require_shared();
       var hasOwn = require_has_own_property();
       var uid = require_uid();
-      var NATIVE_SYMBOL = require_symbol_constructor_detection();
+      var NATIVE_SYMBOL = require_native_symbol();
       var USE_SYMBOL_AS_UID = require_use_symbol_as_uid();
       var WellKnownSymbolsStore = shared("wks");
       var Symbol2 = global3.Symbol;
@@ -9736,13 +9697,14 @@
     }
   });
 
-  // node_modules/core-js/internals/weak-map-basic-detection.js
-  var require_weak_map_basic_detection = __commonJS({
-    "node_modules/core-js/internals/weak-map-basic-detection.js"(exports, module) {
+  // node_modules/core-js/internals/native-weak-map.js
+  var require_native_weak_map = __commonJS({
+    "node_modules/core-js/internals/native-weak-map.js"(exports, module) {
       var global3 = require_global();
       var isCallable2 = require_is_callable();
+      var inspectSource = require_inspect_source();
       var WeakMap = global3.WeakMap;
-      module.exports = isCallable2(WeakMap) && /native code/.test(String(WeakMap));
+      module.exports = isCallable2(WeakMap) && /native code/.test(inspectSource(WeakMap));
     }
   });
 
@@ -9768,7 +9730,7 @@
   // node_modules/core-js/internals/internal-state.js
   var require_internal_state = __commonJS({
     "node_modules/core-js/internals/internal-state.js"(exports, module) {
-      var NATIVE_WEAK_MAP = require_weak_map_basic_detection();
+      var NATIVE_WEAK_MAP = require_native_weak_map();
       var global3 = require_global();
       var uncurryThis8 = require_function_uncurry_this();
       var isObject = require_is_object();
@@ -9802,7 +9764,7 @@
         wmset = uncurryThis8(store.set);
         set = function(it2, metadata) {
           if (wmhas(store, it2))
-            throw TypeError2(OBJECT_ALREADY_INITIALIZED);
+            throw new TypeError2(OBJECT_ALREADY_INITIALIZED);
           metadata.facade = it2;
           wmset(store, it2, metadata);
           return metadata;
@@ -9818,7 +9780,7 @@
         hiddenKeys[STATE] = true;
         set = function(it2, metadata) {
           if (hasOwn(it2, STATE))
-            throw TypeError2(OBJECT_ALREADY_INITIALIZED);
+            throw new TypeError2(OBJECT_ALREADY_INITIALIZED);
           metadata.facade = it2;
           createNonEnumerableProperty2(it2, STATE, metadata);
           return metadata;
@@ -10406,13 +10368,12 @@
     "node_modules/core-js/internals/species-constructor.js"(exports, module) {
       var anObject5 = require_an_object();
       var aConstructor = require_a_constructor();
-      var isNullOrUndefined4 = require_is_null_or_undefined();
       var wellKnownSymbol3 = require_well_known_symbol();
       var SPECIES = wellKnownSymbol3("species");
       module.exports = function(O3, defaultConstructor) {
         var C2 = anObject5(O3).constructor;
         var S2;
-        return C2 === void 0 || isNullOrUndefined4(S2 = anObject5(C2)[SPECIES]) ? defaultConstructor : aConstructor(S2);
+        return C2 === void 0 || (S2 = anObject5(C2)[SPECIES]) == void 0 ? defaultConstructor : aConstructor(S2);
       };
     }
   });
@@ -10820,12 +10781,11 @@
     "node_modules/core-js/internals/new-promise-capability.js"(exports, module) {
       "use strict";
       var aCallable = require_a_callable();
-      var $TypeError = TypeError;
       var PromiseCapability = function(C2) {
         var resolve, reject;
         this.promise = new C2(function($$resolve, $$reject) {
           if (resolve !== void 0 || reject !== void 0)
-            throw $TypeError("Bad Promise constructor");
+            throw TypeError("Bad Promise constructor");
           resolve = $$resolve;
           reject = $$reject;
         });
@@ -11141,12 +11101,11 @@
     "node_modules/core-js/internals/get-iterator-method.js"(exports, module) {
       var classof = require_classof();
       var getMethod4 = require_get_method();
-      var isNullOrUndefined4 = require_is_null_or_undefined();
       var Iterators = require_iterators();
       var wellKnownSymbol3 = require_well_known_symbol();
       var ITERATOR2 = wellKnownSymbol3("iterator");
       module.exports = function(it2) {
-        if (!isNullOrUndefined4(it2))
+        if (it2 != void 0)
           return getMethod4(it2, ITERATOR2) || getMethod4(it2, "@@iterator") || Iterators[classof(it2)];
       };
     }
@@ -11975,14 +11934,13 @@
   });
 
   // node_modules/core-js/modules/es.string.match.js
-  var call, fixRegExpWellKnownSymbolLogic, anObject, isNullOrUndefined, toLength, toString, requireObjectCoercible, getMethod, advanceStringIndex, regExpExec;
+  var call, fixRegExpWellKnownSymbolLogic, anObject, toLength, toString, requireObjectCoercible, getMethod, advanceStringIndex, regExpExec;
   var init_es_string_match = __esm({
     "node_modules/core-js/modules/es.string.match.js"() {
       "use strict";
       call = require_function_call();
       fixRegExpWellKnownSymbolLogic = require_fix_regexp_well_known_symbol_logic();
       anObject = require_an_object();
-      isNullOrUndefined = require_is_null_or_undefined();
       toLength = require_to_length();
       toString = require_to_string();
       requireObjectCoercible = require_require_object_coercible();
@@ -11993,7 +11951,7 @@
         return [
           function match(regexp) {
             var O3 = requireObjectCoercible(this);
-            var matcher = isNullOrUndefined(regexp) ? void 0 : getMethod(regexp, MATCH);
+            var matcher = regexp == void 0 ? void 0 : getMethod(regexp, MATCH);
             return matcher ? call(matcher, regexp, O3) : new RegExp(regexp)[MATCH](toString(O3));
           },
           function(string) {
@@ -12077,7 +12035,7 @@
   });
 
   // node_modules/core-js/modules/es.string.replace.js
-  var apply, call2, uncurryThis, fixRegExpWellKnownSymbolLogic2, fails, anObject2, isCallable, isNullOrUndefined2, toIntegerOrInfinity, toLength2, toString2, requireObjectCoercible2, advanceStringIndex2, getMethod2, getSubstitution, regExpExec2, wellKnownSymbol, REPLACE, max2, min, concat, push, stringIndexOf, stringSlice, maybeToString, REPLACE_KEEPS_$0, REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE, REPLACE_SUPPORTS_NAMED_GROUPS;
+  var apply, call2, uncurryThis, fixRegExpWellKnownSymbolLogic2, fails, anObject2, isCallable, toIntegerOrInfinity, toLength2, toString2, requireObjectCoercible2, advanceStringIndex2, getMethod2, getSubstitution, regExpExec2, wellKnownSymbol, REPLACE, max2, min, concat, push, stringIndexOf, stringSlice, maybeToString, REPLACE_KEEPS_$0, REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE, REPLACE_SUPPORTS_NAMED_GROUPS;
   var init_es_string_replace = __esm({
     "node_modules/core-js/modules/es.string.replace.js"() {
       "use strict";
@@ -12088,7 +12046,6 @@
       fails = require_fails();
       anObject2 = require_an_object();
       isCallable = require_is_callable();
-      isNullOrUndefined2 = require_is_null_or_undefined();
       toIntegerOrInfinity = require_to_integer_or_infinity();
       toLength2 = require_to_length();
       toString2 = require_to_string();
@@ -12131,7 +12088,7 @@
         return [
           function replace(searchValue, replaceValue) {
             var O3 = requireObjectCoercible2(this);
-            var replacer = isNullOrUndefined2(searchValue) ? void 0 : getMethod2(searchValue, REPLACE);
+            var replacer = searchValue == void 0 ? void 0 : getMethod2(searchValue, REPLACE);
             return replacer ? call2(replacer, searchValue, O3, replaceValue) : call2(nativeReplace, toString2(O3), searchValue, replaceValue);
           },
           function(string, replaceValue) {
@@ -12242,7 +12199,7 @@
   });
 
   // node_modules/core-js/modules/es.string.starts-with.js
-  var $, uncurryThis2, getOwnPropertyDescriptor, toLength3, toString3, notARegExp, requireObjectCoercible3, correctIsRegExpLogic, IS_PURE, nativeStartsWith, stringSlice2, min2, CORRECT_IS_REGEXP_LOGIC, MDN_POLYFILL_BUG;
+  var $, uncurryThis2, getOwnPropertyDescriptor, toLength3, toString3, notARegExp, requireObjectCoercible3, correctIsRegExpLogic, IS_PURE, un$StartsWith, stringSlice2, min2, CORRECT_IS_REGEXP_LOGIC, MDN_POLYFILL_BUG;
   var init_es_string_starts_with = __esm({
     "node_modules/core-js/modules/es.string.starts-with.js"() {
       "use strict";
@@ -12255,7 +12212,7 @@
       requireObjectCoercible3 = require_require_object_coercible();
       correctIsRegExpLogic = require_correct_is_regexp_logic();
       IS_PURE = require_is_pure();
-      nativeStartsWith = uncurryThis2("".startsWith);
+      un$StartsWith = uncurryThis2("".startsWith);
       stringSlice2 = uncurryThis2("".slice);
       min2 = Math.min;
       CORRECT_IS_REGEXP_LOGIC = correctIsRegExpLogic("startsWith");
@@ -12269,7 +12226,7 @@
           notARegExp(searchString);
           var index2 = toLength3(min2(arguments.length > 1 ? arguments[1] : void 0, that.length));
           var search = toString3(searchString);
-          return nativeStartsWith ? nativeStartsWith(that, search, index2) : stringSlice2(that, index2, index2 + search.length) === search;
+          return un$StartsWith ? un$StartsWith(that, search, index2) : stringSlice2(that, index2, index2 + search.length) === search;
         }
       });
     }
@@ -12338,7 +12295,6 @@
       "use strict";
       var fails4 = require_fails();
       var isCallable2 = require_is_callable();
-      var isObject = require_is_object();
       var create = require_object_create();
       var getPrototypeOf = require_object_get_prototype_of();
       var defineBuiltIn2 = require_define_built_in();
@@ -12359,7 +12315,7 @@
             IteratorPrototype = PrototypeOfArrayIteratorPrototype;
         }
       }
-      var NEW_ITERATOR_PROTOTYPE = !isObject(IteratorPrototype) || fails4(function() {
+      var NEW_ITERATOR_PROTOTYPE = IteratorPrototype == void 0 || fails4(function() {
         var test2 = {};
         return IteratorPrototype[ITERATOR2].call(test2) !== test2;
       });
@@ -12379,9 +12335,9 @@
     }
   });
 
-  // node_modules/core-js/internals/iterator-create-constructor.js
-  var require_iterator_create_constructor = __commonJS({
-    "node_modules/core-js/internals/iterator-create-constructor.js"(exports, module) {
+  // node_modules/core-js/internals/create-iterator-constructor.js
+  var require_create_iterator_constructor = __commonJS({
+    "node_modules/core-js/internals/create-iterator-constructor.js"(exports, module) {
       "use strict";
       var IteratorPrototype = require_iterators_core().IteratorPrototype;
       var create = require_object_create();
@@ -12401,16 +12357,16 @@
     }
   });
 
-  // node_modules/core-js/internals/iterator-define.js
-  var require_iterator_define = __commonJS({
-    "node_modules/core-js/internals/iterator-define.js"(exports, module) {
+  // node_modules/core-js/internals/define-iterator.js
+  var require_define_iterator = __commonJS({
+    "node_modules/core-js/internals/define-iterator.js"(exports, module) {
       "use strict";
       var $9 = require_export();
       var call4 = require_function_call();
       var IS_PURE3 = require_is_pure();
       var FunctionName = require_function_name();
       var isCallable2 = require_is_callable();
-      var createIteratorConstructor = require_iterator_create_constructor();
+      var createIteratorConstructor = require_create_iterator_constructor();
       var getPrototypeOf = require_object_get_prototype_of();
       var setPrototypeOf = require_object_set_prototype_of();
       var setToStringTag = require_set_to_string_tag();
@@ -12511,15 +12467,6 @@
     }
   });
 
-  // node_modules/core-js/internals/create-iter-result-object.js
-  var require_create_iter_result_object = __commonJS({
-    "node_modules/core-js/internals/create-iter-result-object.js"(exports, module) {
-      module.exports = function(value, done) {
-        return { value, done };
-      };
-    }
-  });
-
   // node_modules/core-js/modules/es.array.iterator.js
   var require_es_array_iterator = __commonJS({
     "node_modules/core-js/modules/es.array.iterator.js"(exports, module) {
@@ -12529,8 +12476,7 @@
       var Iterators = require_iterators();
       var InternalStateModule = require_internal_state();
       var defineProperty = require_object_define_property().f;
-      var defineIterator = require_iterator_define();
-      var createIterResultObject = require_create_iter_result_object();
+      var defineIterator = require_define_iterator();
       var IS_PURE3 = require_is_pure();
       var DESCRIPTORS = require_descriptors();
       var ARRAY_ITERATOR = "Array Iterator";
@@ -12550,13 +12496,13 @@
         var index2 = state.index++;
         if (!target || index2 >= target.length) {
           state.target = void 0;
-          return createIterResultObject(void 0, true);
+          return { value: void 0, done: true };
         }
         if (kind == "keys")
-          return createIterResultObject(index2, false);
+          return { value: index2, done: false };
         if (kind == "values")
-          return createIterResultObject(target[index2], false);
-        return createIterResultObject([index2, target[index2]], false);
+          return { value: target[index2], done: false };
+        return { value: [index2, target[index2]], done: false };
       }, "values");
       var values = Iterators.Arguments = Iterators.Array;
       addToUnscopables("keys");
@@ -12760,7 +12706,7 @@
   });
 
   // node_modules/core-js/modules/es.string.ends-with.js
-  var $3, uncurryThis3, getOwnPropertyDescriptor2, toLength4, toString4, notARegExp2, requireObjectCoercible4, correctIsRegExpLogic2, IS_PURE2, nativeEndsWith, slice, min3, CORRECT_IS_REGEXP_LOGIC2, MDN_POLYFILL_BUG2;
+  var $3, uncurryThis3, getOwnPropertyDescriptor2, toLength4, toString4, notARegExp2, requireObjectCoercible4, correctIsRegExpLogic2, IS_PURE2, un$EndsWith, slice, min3, CORRECT_IS_REGEXP_LOGIC2, MDN_POLYFILL_BUG2;
   var init_es_string_ends_with = __esm({
     "node_modules/core-js/modules/es.string.ends-with.js"() {
       "use strict";
@@ -12773,7 +12719,7 @@
       requireObjectCoercible4 = require_require_object_coercible();
       correctIsRegExpLogic2 = require_correct_is_regexp_logic();
       IS_PURE2 = require_is_pure();
-      nativeEndsWith = uncurryThis3("".endsWith);
+      un$EndsWith = uncurryThis3("".endsWith);
       slice = uncurryThis3("".slice);
       min3 = Math.min;
       CORRECT_IS_REGEXP_LOGIC2 = correctIsRegExpLogic2("endsWith");
@@ -12789,7 +12735,7 @@
           var len = that.length;
           var end = endPosition === void 0 ? len : min3(toLength4(endPosition), len);
           var search = toString4(searchString);
-          return nativeEndsWith ? nativeEndsWith(that, search, end) : slice(that, end - search.length, end) === search;
+          return un$EndsWith ? un$EndsWith(that, search, end) : slice(that, end - search.length, end) === search;
         }
       });
     }
@@ -12834,7 +12780,7 @@
   });
 
   // node_modules/core-js/modules/es.string.split.js
-  var apply2, call3, uncurryThis4, fixRegExpWellKnownSymbolLogic3, anObject3, isNullOrUndefined3, isRegExp, requireObjectCoercible5, speciesConstructor, advanceStringIndex3, toLength5, toString5, getMethod3, arraySlice, callRegExpExec, regexpExec, stickyHelpers, fails2, UNSUPPORTED_Y, MAX_UINT32, min4, $push, exec, push2, stringSlice3, SPLIT_WORKS_WITH_OVERWRITTEN_EXEC;
+  var apply2, call3, uncurryThis4, fixRegExpWellKnownSymbolLogic3, isRegExp, anObject3, requireObjectCoercible5, speciesConstructor, advanceStringIndex3, toLength5, toString5, getMethod3, arraySlice, callRegExpExec, regexpExec, stickyHelpers, fails2, UNSUPPORTED_Y, MAX_UINT32, min4, $push, exec, push2, stringSlice3, SPLIT_WORKS_WITH_OVERWRITTEN_EXEC;
   var init_es_string_split = __esm({
     "node_modules/core-js/modules/es.string.split.js"() {
       "use strict";
@@ -12842,9 +12788,8 @@
       call3 = require_function_call();
       uncurryThis4 = require_function_uncurry_this();
       fixRegExpWellKnownSymbolLogic3 = require_fix_regexp_well_known_symbol_logic();
-      anObject3 = require_an_object();
-      isNullOrUndefined3 = require_is_null_or_undefined();
       isRegExp = require_is_regexp();
+      anObject3 = require_an_object();
       requireObjectCoercible5 = require_require_object_coercible();
       speciesConstructor = require_species_constructor();
       advanceStringIndex3 = require_advance_string_index();
@@ -12920,7 +12865,7 @@
         return [
           function split(separator, limit) {
             var O3 = requireObjectCoercible5(this);
-            var splitter = isNullOrUndefined3(separator) ? void 0 : getMethod3(separator, SPLIT);
+            var splitter = separator == void 0 ? void 0 : getMethod3(separator, SPLIT);
             return splitter ? call3(splitter, separator, O3, limit) : call3(internalSplit, toString5(O3), separator, limit);
           },
           function(string, limit) {
@@ -13418,21 +13363,21 @@
   });
 
   // node_modules/core-js/modules/es.array.index-of.js
-  var $5, uncurryThis5, $indexOf, arrayMethodIsStrict2, nativeIndexOf, NEGATIVE_ZERO, STRICT_METHOD2;
+  var $5, uncurryThis5, $IndexOf, arrayMethodIsStrict2, un$IndexOf, NEGATIVE_ZERO, STRICT_METHOD2;
   var init_es_array_index_of = __esm({
     "node_modules/core-js/modules/es.array.index-of.js"() {
       "use strict";
       $5 = require_export();
       uncurryThis5 = require_function_uncurry_this();
-      $indexOf = require_array_includes().indexOf;
+      $IndexOf = require_array_includes().indexOf;
       arrayMethodIsStrict2 = require_array_method_is_strict();
-      nativeIndexOf = uncurryThis5([].indexOf);
-      NEGATIVE_ZERO = !!nativeIndexOf && 1 / nativeIndexOf([1], 1, -0) < 0;
+      un$IndexOf = uncurryThis5([].indexOf);
+      NEGATIVE_ZERO = !!un$IndexOf && 1 / un$IndexOf([1], 1, -0) < 0;
       STRICT_METHOD2 = arrayMethodIsStrict2("indexOf");
       $5({ target: "Array", proto: true, forced: NEGATIVE_ZERO || !STRICT_METHOD2 }, {
         indexOf: function indexOf(searchElement) {
           var fromIndex = arguments.length > 1 ? arguments[1] : void 0;
-          return NEGATIVE_ZERO ? nativeIndexOf(this, searchElement, fromIndex) || 0 : $indexOf(this, searchElement, fromIndex);
+          return NEGATIVE_ZERO ? un$IndexOf(this, searchElement, fromIndex) || 0 : $IndexOf(this, searchElement, fromIndex);
         }
       });
     }
@@ -13469,20 +13414,20 @@
   });
 
   // node_modules/core-js/modules/es.array.reverse.js
-  var $7, uncurryThis7, isArray, nativeReverse, test;
+  var $7, uncurryThis7, isArray, un$Reverse, test;
   var init_es_array_reverse = __esm({
     "node_modules/core-js/modules/es.array.reverse.js"() {
       "use strict";
       $7 = require_export();
       uncurryThis7 = require_function_uncurry_this();
       isArray = require_is_array();
-      nativeReverse = uncurryThis7([].reverse);
+      un$Reverse = uncurryThis7([].reverse);
       test = [1, 2];
       $7({ target: "Array", proto: true, forced: String(test) === String(test.reverse()) }, {
         reverse: function reverse() {
           if (isArray(this))
             this.length = this.length;
-          return nativeReverse(this);
+          return un$Reverse(this);
         }
       });
     }
@@ -13942,7 +13887,7 @@
   });
 
   // node_modules/core-js/modules/es.regexp.to-string.js
-  var PROPER_FUNCTION_NAME, defineBuiltIn, anObject4, $toString, fails3, getRegExpFlags, TO_STRING, RegExpPrototype, nativeToString, NOT_GENERIC, INCORRECT_NAME;
+  var PROPER_FUNCTION_NAME, defineBuiltIn, anObject4, $toString, fails3, getRegExpFlags, TO_STRING, RegExpPrototype, n$ToString, NOT_GENERIC, INCORRECT_NAME;
   var init_es_regexp_to_string = __esm({
     "node_modules/core-js/modules/es.regexp.to-string.js"() {
       "use strict";
@@ -13954,11 +13899,11 @@
       getRegExpFlags = require_regexp_get_flags();
       TO_STRING = "toString";
       RegExpPrototype = RegExp.prototype;
-      nativeToString = RegExpPrototype[TO_STRING];
+      n$ToString = RegExpPrototype[TO_STRING];
       NOT_GENERIC = fails3(function() {
-        return nativeToString.call({ source: "a", flags: "b" }) != "/a/b";
+        return n$ToString.call({ source: "a", flags: "b" }) != "/a/b";
       });
-      INCORRECT_NAME = PROPER_FUNCTION_NAME && nativeToString.name != TO_STRING;
+      INCORRECT_NAME = PROPER_FUNCTION_NAME && n$ToString.name != TO_STRING;
       if (NOT_GENERIC || INCORRECT_NAME) {
         defineBuiltIn(RegExp.prototype, TO_STRING, function toString7() {
           var R2 = anObject4(this);
@@ -34477,7 +34422,7 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
-/*! @license DOMPurify 2.4.0 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/2.4.0/LICENSE */
+/*! @license DOMPurify 2.3.10 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/2.3.10/LICENSE */
 /**
  * @license
   Copyright (c) 2008, Adobe Systems Incorporated

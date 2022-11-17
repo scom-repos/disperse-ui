@@ -14,7 +14,7 @@
     }
   ],
   "dependencies": {
-    "@disperse/sdks": "{root}/sdks/index.js",
+    "@scom/disperse-sdk": "{root}/sdks/index.js",
     "@disperse/assets": "{root}/assets/index.js",
     "@disperse/global": "{root}/global/index.js",
     "@disperse/store": "{root}/store/index.js",
